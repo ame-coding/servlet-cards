@@ -1,0 +1,26 @@
+Make sure to keep database outside of project and make sure to download the jar file for database.
+im using sqlite
+
+
+sqlite3 natuur.db
+
+CREATE TABLE users (
+    user TEXT PRIMARY KEY,
+    password TEXT NOT NULL,
+    type TEXT NOT NULL
+);
+
+CREATE TABLE inventory (
+    user TEXT,
+    cards TEXT,
+    sell TEXT,
+    assign TEXT,
+    coins INTEGER DEFAULT 0,
+    FOREIGN KEY(user) REFERENCES users(user)
+);
+
+CREATE TABLE bans (
+    user TEXT,
+    ban TEXT NOT NULL,
+    FOREIGN KEY(user) REFERENCES users(user)
+);

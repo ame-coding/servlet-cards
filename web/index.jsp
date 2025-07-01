@@ -1,17 +1,13 @@
-<%-- 
-    Document   : index
-    Created on : Jun 30, 2025, 10:51:06 PM
-    Author     : payme
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<head>
+  <title>Natuur</title>
+</head>
+<body>
+  <%@ include file="fireback.html" %>
+  <div class="splash">
+    
+  </div>
+</body>
 </html>
