@@ -5,6 +5,7 @@
   <title>Simple Fire Flicker (Image Version)</title>
   <style>
     html, body {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
       height: 100%;
@@ -48,10 +49,11 @@
       bottom: 0;
       left:50%;
       transform: translateX(-50%);
-      width: 160vw;
+      width: 250vw;
       height: auto;
       opacity: 0.6;
       max-width: none;     
+       z-index: -18;
     }
 
     @keyframes flicker {
