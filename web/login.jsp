@@ -135,16 +135,51 @@
 </div>
     </div>
 <script>
+     const base = '<%= request.getContextPath() %>/';
 document.getElementById("login").addEventListener("click", () => {
-  const user = document.getElementById("email").value.trim();
-  const pass = document.getElementById("pass").value.trim();
-  const check = document.getElementById("check");
+    const email = document.getElementById("email").value.trim();
+    const pass = document.getElementById("pass").value.trim();
+    const check = document.getElementById("check");
 
-  if (!user || !pass) {
-    check.textContent = "Enter both email and password";
-  } else {
-    check.textContent = "Logging in..";
-  }
+    if (!email || !pass) {
+        check.textContent = "Enter both email and password";
+        return;
+    }
+
+    check.textContent = "Logging in...";
+
+    const xmlsend =
+        "<login><user>"+email+"</user><pass>"+pass+"</pass></login>";
+
+    fetch(base+"login", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ xml: xmlsend })
+    })
+    .then(response => response.text())
+    .then(str => {
+        
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(str, "application/xml");
+        const message = xmlDoc.getElementsByTagName("message")[0]?.textContent;
+
+        if (!message) {
+            check.textContent = "No message was sent from Login.java";
+            return;
+        }
+
+        if (message.trim() === "Login valid") {
+            window.location.href = "index.jsp";
+        } else {
+            check.textContent = message;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        check.textContent = "Error contacting server.";
+    });
 });
 </script>
 
