@@ -1,6 +1,4 @@
 <div class="ban-container">
-  <!-- JS will insert your table here -->
-
   <div id="banReason" hidden>
     <div class="header">
       <span>Ban Reason</span>
@@ -9,6 +7,10 @@
 
     <input type="text" id="banInput" maxlength="25" placeholder="Enter reason">
 
-    <button id="banBtn">Ban</button>
+    <button id="banReasonBtn">Ban</button>
   </div>
+
+  <div class="ban-table"></div>
+  <p id="message"></p>
 </div>
+

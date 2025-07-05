@@ -1,10 +1,17 @@
-   
-    function endlisten() {
-    const signupBtn = document.getElementById("signup");
-    if (signupBtn) {
-        signupBtn.removeEventListener("click", signlisten);
+const listeners = [];
+
+function addListener(element, event, handler) {
+    element.addEventListener(event, handler);
+    listeners.push({ element, event, handler });
+}
+
+function endAllListeners() {
+    for (const { element, event, handler } of listeners) {
+        element.removeEventListener(event, handler);
     }
-    }
+    listeners.length = 0;
+}
+
 const signlisten=()=>{
         const email = document.getElementById("email").value.trim();
     const pass = document.getElementById("pass").value.trim();
@@ -61,53 +68,104 @@ const signlisten=()=>{
     });
         
     };
-const banlisten=()=>{
-    
-    
-    
-};
+function loadBanTable() {
+    endAllListeners(); // clear previous listeners
+
+    fetch("ban-servlet") // adjust URL if needed
+        .then(res => res.text())
+        .then(xmlStr => {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlStr, "application/xml");
+
+            const tableDiv = document.querySelector(".ban-table");
+            tableDiv.innerHTML = "";
+
+            const rows = xml.getElementsByTagName("table")[0].children;
+
+            const table = document.createElement("table");
+            table.style.width = "100%";
+            table.style.borderCollapse = "collapse";
+
+            const header = document.createElement("tr");
+            header.innerHTML = `<th>User</th><th>Type</th><th>Action</th>`;
+            table.appendChild(header);
+
+            for (let row of rows) {
+                const user = row.getElementsByTagName("user")[0].textContent;
+                const type = row.getElementsByTagName("type")[0].textContent;
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${user}</td>
+                    <td>${type}</td>
+                    <td><button class="banBtn" data-user="${user}">Ban</button></td>
+                `;
+                table.appendChild(tr);
+            }
+
+            tableDiv.appendChild(table);
+
+            // attach banBtn logic
+            document.querySelectorAll(".banBtn").forEach(btn => {
+                addListener(btn, "click", () => {
+                    showBanReason(btn.dataset.user);
+                });
+            });
+        });
+}
+
 function addjsp(){
     
 document.getElementById("signup").addEventListener("click",signlisten);
 }
 
 function banjsp(){
+document.addEventListener("DOMContentLoaded", loadBanTable);
 
 const banReasonModal = document.getElementById("banReason");
-const banCloseBtn = document.getElementById("banClose");
 const banInput = document.getElementById("banInput");
-const banBtn = document.getElementById("banBtn");
+const message = document.getElementById("message");
 
+let currentUser = "";
 
-let banreason = "";
-
-// Show the modal
-function showBanReason() {
-    banReasonModal.style.display = "block";
-    banInput.value = "";  // reset input
-    banreason = "";       // clear previous value
+function showBanReason(user) {
+    currentUser = user;
+    banInput.value = "";
+    banReasonModal.hidden = false;
 }
 
-// Hide the modal
 function hideBanReason() {
-    banReasonModal.style.display = "none";
+    banReasonModal.hidden = true;
 }
 
-// Attach listeners
-banCloseBtn.addEventListener("click", hideBanReason);
+addListener(document.getElementById("banClose"), "click", hideBanReason);
 
-banBtn.addEventListener("click", () => {
-    banreason = banInput.value.trim();
-
-    if (banreason.length === 0) {
-        alert("Please enter a ban reason.");
+addListener(document.getElementById("banReasonBtn"), "click", () => {
+    const reason = banInput.value.trim();
+    if (!reason) {
+        message.textContent = "Please enter a reason.";
         return;
     }
 
-    console.log("Ban reason:", banreason);
-
-    // send banreason somewhere or use as needed
-    hideBanReason();
+    fetch("ban-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ user: currentUser, reason: reason })
+    })
+    .then(res => res.text())
+    .then(response => {
+        if (response.trim() === "success") {
+            message.textContent = "User banned successfully.";
+            loadBanTable(); // refresh table
+        } else {
+            message.textContent = "Failed to ban user.";
+        }
+        hideBanReason();
+    })
+    .catch(() => {
+        message.textContent = "Error contacting server.";
+        hideBanReason();
+    });
 });
 
 }
