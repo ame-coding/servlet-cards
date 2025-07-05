@@ -1,161 +1,206 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="javax.servlet.http.Cookie"%>
+<%
+    String u = "";
+    Cookie[] cook = request.getCookies();
+    
+     if (cook != null) {
+        for (Cookie c : cook) {
+            if ("user".equals(c.getName())) {
+                u = c.getValue();
+            }
+        }
+    }
+    
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel</title>
-  <style>
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Admin Panel</title>
+<link rel="stylesheet" type="text/css" href="admin/adminstyle.css">
 
-    .container {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+<style>
+ @font-face {
+    font-family: 'Jacquard';
+    src: url('fonts/Jacquard.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+  .admin-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+     color:white;
+     font-family: Tahoma, serif;
+}
 
-    /* Sidebar */
-    .sidebar {
-      width: 220px;
-      background: #222;
-      color: #fff;
-      padding: 20px;
-      flex-shrink: 0;
-      transition: transform 0.3s ease;
-    }
 
-    .sidebar nav a {
-      display: block;
-      margin: 15px 0;
-      color: white;
-      text-decoration: none;
-    }
+  .header {
 
-    .sidebar h2 {
-      margin-bottom: 20px;
-    }
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    height: 9vh;  
+     background: rgba(0, 0, 0, 0.6);
+  }
 
-    /* Main */
-    .main {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
+  .menu-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+	color: white;
+  }
 
-    .header {
-      background: #f5f5f5;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 150px;
+     background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    
+     
+  }
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  .sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+  }
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    float: right;
+  }
 
-    .menu-button {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    /* Grid */
-    .content-grid {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        transform: translateX(-100%);
-        z-index: 1000;
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .menu-button {
-        display: block;
-      }
-
-      .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0,0,0,0.3);
-        z-index: 900;
-      }
-
-      .overlay.show {
-        display: block;
-      }
-    }
-  </style>
+  .admin-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+     background: rgba(0, 0, 0, 0.5);
+     
+  }
+  #welcome{
+      font-family: 'Jacquard', serif;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar" id="sidebar">
-      <h2>Admin</h2>
-      <nav>
-        <a href="#">Dashboard</a>
-        <a href="#">Users</a>
-        <a href="#">Settings</a>
-        <a href="#">Logout</a>
-      </nav>
-    </div>
+<div class="admin-container">
+<div class="header">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <h1 id="title">Welcome</h1>
+</div>
 
-    <div class="overlay" id="overlay"></div>
+<div class="sidebar" id="sidebar">
+  <button class="close-btn" id="closeBtn"><</button>
+  <h2>Admin</h2>
+  <a href="#" open-admin="admin/ban.jsp">Ban</a>
+  <a href="#" open-admin="admin/unban.jsp">Unban</a>
+  <a href="#" open-admin="admin/delete.jsp">Delete</a>
+  <a href="#" open-admin="admin/add.jsp">Add</a>
+  <a href="logout.jsp">Logout</a>
+</div>
 
-    <main class="main">
-      <header class="header">
-        <button id="toggleSidebar" class="menu-button">☰</button>
-        <h1>Dashboard</h1>
-      </header>
+<div class="admin-content" id="admin-content">
+    <h2 id="welcome">Welcome, <%= u %></h2>
+</div>
+</div>
+<script>
+     const base = '<%= request.getContextPath() %>/';
+const sidebar = document.getElementById('sidebar');
+const menuBtn = document.getElementById('menuBtn');
+const closeBtn = document.getElementById('closeBtn');
+const title = document.getElementById("title");
+menuBtn.onclick = () => {
+  sidebar.classList.add('show');
+};
 
-      <section class="content-grid">
-        <div class="card">Widget A</div>
-        <div class="card">Widget B</div>
-        <div class="card">Widget C</div>
-        <div class="card">Widget D</div>
-        <div class="card">Widget E</div>
-        <div class="card">Widget F</div>
-      </section>
-    </main>
-  </div>
+closeBtn.onclick = () => {
+  sidebar.classList.remove('show');
+};
 
-  <script>
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
+var adminContent = document.getElementById('admin-content');
 
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('show');
+var links = sidebar.querySelectorAll('a[open-admin]');
+
+for (var i = 0; i < links.length; i++) {
+    var link = links[i];
+
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var jsplink = this.getAttribute('open-admin');
+
+        fetch(jsplink)
+            .then((jspr)=>{
+                if (!jspr.ok) {
+                    throw new Error('Cant open jsp: ' + response.status);
+                }
+                return jspr.text();
+            })
+            .then((jsphtml)=>{
+                endlisten();
+                adminContent.innerHTML = jsphtml;
+                                switch (jsplink) {
+                    case "admin/ban.jsp":
+                        console.log("Ban JSP loaded");
+                        title.textContent = "Ban";
+                        banjsp();
+                        break;
+
+                    case "admin/unban.jsp":
+                        console.log("Unban JSP loaded");
+                        title.textContent = "Unban";
+                        break;
+
+                    case "admin/delete.jsp":
+                        console.log("Delete JSP loaded");
+                        title.textContent = "Delete";
+                        break;
+
+                    case "admin/add.jsp":
+                        console.log("Add JSP loaded");
+                        title.textContent = "Add";
+                        addjsp(); 
+                        break;
+
+                    default:
+                        console.log("Jsp being weird bruh: " + jsplink);
+                        break;
+                }
+            })
+            .catch((error)=>{
+                adminContent.innerHTML =
+                    '<p style="color:red;">idk why jsp cant be loaded' + jsplink + '</p>';
+                console.error(error);
+            });
+
+        sidebar.classList.remove('show');
     });
+}
+</script>
+<script src="admin/adminscript.js"></script>
 
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('show');
-    });
-  </script>
 </body>
 </html>

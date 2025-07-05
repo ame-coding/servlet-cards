@@ -29,7 +29,8 @@ public class signup extends HttpServlet {
             Document doc = builder.parse(new InputSource(new StringReader(xmlS)));
             String user = doc.getElementsByTagName("user").item(0).getTextContent();
             String pass = doc.getElementsByTagName("pass").item(0).getTextContent();
-
+            String type = doc.getElementsByTagName("type").item(0).getTextContent();
+            String add = doc.getElementsByTagName("add").item(0).getTextContent();
             System.out.println("User: " + user);
 
 
@@ -52,19 +53,19 @@ public class signup extends HttpServlet {
                 }
                 rs.close();
                 ps = c.prepareStatement(
-                    "INSERT INTO users (user, password, type) VALUES (?, ?, 'player');");
+                    "INSERT INTO users (user, password, type) VALUES (?, ?, ?);");
                 ps.setString(1, user);
                 ps.setString(2, pass);
-
+                ps.setString(3, type);
                 ps.executeUpdate();
                 
                 ps.close();
-
-                Cookie userc = new Cookie("user", user);
-                Cookie typec= new Cookie("type", "player");
-                res.addCookie(userc);
-                res.addCookie(typec);
-
+                if(!add.equals("admin")){
+                    Cookie userc = new Cookie("user", user);
+                    Cookie typec= new Cookie("type", type);
+                    res.addCookie(userc);
+                    res.addCookie(typec);
+                }
                 out.println("<?xml version=\"1.0\"?>");
                 out.println("<response>");
                 out.println("<message>Signing up</message>");

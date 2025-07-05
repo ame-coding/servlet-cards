@@ -149,7 +149,7 @@ document.getElementById("signup").addEventListener("click", () => {
     check.textContent = "Signing up...";
 
     const xmlsend =
-        "<login><user>"+email+"</user><pass>"+pass+"</pass></login>";
+        "<login><user>"+email+"</user><pass>"+pass+"</pass><type>player</type><add>yo</add></login>";
 
     fetch(base+"signup", {
         method: 'POST',

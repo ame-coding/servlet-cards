@@ -1,0 +1,179 @@
+/*------------------Add css---------------*/
+.sign {
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; 
+    padding: 20px;
+    width: 60%;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+
+.input-box {
+	margin-top: -5px;
+	 display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #ddd;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.sign input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.sign input:focus {
+    outline: none;
+    border-color: #a0522d;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.sign input::placeholder {
+    color: #aaa;
+}
+
+.signbut {
+    align-self: center;
+    margin-top: 8px; 
+    padding: 8px 16px;
+    background-color: #a0522d;
+    color: #fff3e0;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.signbut:hover {
+    background-color: #8b4513;
+}
+
+#check {
+    color: #cc7722;
+    font-size: 13px;
+    text-align: center;
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+}
+.type-radio {
+  display: flex;
+  gap: 9px;
+  margin-top: 5px;
+}
+
+.type-radio label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ddd;
+}
+.type-radio input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333; 
+  border-radius: 50%;
+  background-color: #5c4033;
+  display: inline-block;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+
+}
+
+.type-radio input[type="radio"]:checked {
+  background-color: #ff8c00; 
+  border-color: #333;
+}
+/*--------------------ban css-----------------------*/
+.ban-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+#banReason {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #5c4033;
+  padding: 12px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+#banReason .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+#banClose {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+#banInput {
+  width: 100%;
+  padding: 6px;
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+#banBtn {
+  display: block;
+  margin-left: auto;
+  padding: 6px 10px;
+  background: #5c4033;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+.ban-reason-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.ban-reason-footer button {
+    padding: 6px 12px;
+    background-color: #5c4033;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.ban-reason-footer button:hover {
+    background-color: #7a543f;
+}
