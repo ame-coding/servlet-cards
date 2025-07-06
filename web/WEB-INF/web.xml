@@ -8,6 +8,26 @@
         <servlet-name>ban</servlet-name>
         <servlet-class>backend.admin.ban</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>banupdate</servlet-name>
+        <servlet-class>backend.admin.banupdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>unban</servlet-name>
+        <servlet-class>backend.admin.unban</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>unbanupdate</servlet-name>
+        <servlet-class>backend.admin.unbanupdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>delete</servlet-name>
+        <servlet-class>backend.admin.delete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteupdate</servlet-name>
+        <servlet-class>backend.admin.deleteupdate</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -23,5 +43,25 @@
     <servlet-mapping>
         <servlet-name>ban</servlet-name>
         <url-pattern>/ban</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>banupdate</servlet-name>
+        <url-pattern>/banupdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>unban</servlet-name>
+        <url-pattern>/unban</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>unbanupdate</servlet-name>
+        <url-pattern>/unbanupdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>delete</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteupdate</servlet-name>
+        <url-pattern>/deleteupdate</url-pattern>
     </servlet-mapping>
 </web-app>

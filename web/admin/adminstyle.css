@@ -1,48 +1,12 @@
-/*------------------Add css---------------*/
-.sign {
-    margin:0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px; 
-    padding: 20px;
-    width: 60%;
-    box-sizing: border-box;
-    border-radius: 6px;
-}
-
-.input-box {
-	margin-top: -5px;
-	 display: flex;
-    flex-direction: column;
-    font-size: 14px;
+#check {
+    color: #cc7722;
+    font-size: 13px;
+    text-align: center;
+    margin: 5px 0;
     font-family: Arial, sans-serif;
-    color: #ddd;
-    margin-bottom: 3px;
-    text-align: left;
 }
 
-.sign input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid rgba(128, 128, 128, 0.4);
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.2);
-    color: white;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.sign input:focus {
-    outline: none;
-    border-color: #a0522d;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.sign input::placeholder {
-    color: #aaa;
-}
-
-.signbut {
+.but {
     align-self: center;
     margin-top: 8px; 
     padding: 8px 16px;
@@ -54,19 +18,83 @@
     cursor: pointer;
     font-size: 14px;
     transition: background 0.2s;
+    width: auto; 
 }
 
-.signbut:hover {
+.but:hover {
     background-color: #8b4513;
 }
 
-#check {
-    color: #cc7722;
-    font-size: 13px;
-    text-align: center;
-    margin: 5px 0;
-    font-family: Arial, sans-serif;
+.admin-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: transparent; 
 }
+
+.admin-table  th,
+.admin-table  td {
+    font-size: 14px;
+  border: none;                  
+  padding: 0;                   
+  text-align: left;
+   padding: 6px 12px; 
+  background: transparent;      
+  color:white;          
+}
+
+.admin-table th {
+  background: transparent;       
+        color:#805500;     
+}
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/*------------------Add css---------------*/
+
+.input-box {
+	margin-top: -5px;
+	 display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #ddd;
+    margin-bottom: 3px;
+    text-align: left;
+
+}
+
+.input-box input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.input-box input:focus {
+    outline: none;
+    border-color: #a0522d;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.input-boxinput::placeholder {
+    color: #aaa;
+}
+
+
+
 .type-radio {
   display: flex;
   gap: 9px;
@@ -102,18 +130,9 @@
   border-color: #333;
 }
 /*--------------------ban css-----------------------*/
-.ban-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  position: relative;
-  color: #fff;
-  font-family: Arial, sans-serif;
-}
 
 #banReason {
+    
   position: absolute;
   top: 50%;
   left: 50%;
@@ -122,6 +141,7 @@
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid #5c4033;
   padding: 12px;
+  box-sizing: border-box;
 }
 
 #banReason .header {
@@ -140,7 +160,7 @@
 }
 
 #banInput {
-  width: 100%;
+  width: 90%;
   padding: 6px;
   background: #222;
   color: #fff;
@@ -149,54 +169,4 @@
   margin: 8px 0;
 }
 
-#banReasonBtn {
-  display: block;
-  margin-left: auto;
-  padding: 6px 10px;
-  background: #5c4033;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-}
 
-#banReasonBtn:hover {
-  background: #7a543f;
-}
-
-/* Optional: table styling */
-.ban-table table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px;
-}
-
-.ban-table th,
-.ban-table td {
-  border: 1px solid #555;
-  padding: 6px;
-  text-align: left;
-}
-
-.ban-table th {
-  background: #333;
-}
-
-.ban-table .banBtn {
-  padding: 4px 8px;
-  background: #a0522d;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.ban-table .banBtn:hover {
-  background: #8b4513;
-}
-
-#message {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #cc7722;
-}

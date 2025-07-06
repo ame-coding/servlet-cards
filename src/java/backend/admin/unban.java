@@ -9,7 +9,7 @@ import java.sql.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-public class ban extends HttpServlet {
+public class unban extends HttpServlet {
 Data db = new Data();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res)
@@ -20,7 +20,7 @@ Data db = new Data();
         try (Connection c = db.connectdb()) {
 
             PreparedStatement ps = c.prepareStatement(
-                "SELECT user, type FROM users WHERE type = 'player' AND user NOT IN (SELECT user FROM bans);"
+                "SELECT user,ban FROM bans"
             );
 
             ResultSet rs = ps.executeQuery();
@@ -32,11 +32,11 @@ Data db = new Data();
 
             while (rs.next()) {
                 String user = rs.getString("user");
-                String type = rs.getString("type");
+                String ban= rs.getString("ban");
 
                 out.println("<id i=\"" + i + "\">");
                 out.println("<user>" + user + "</user>");
-                out.println("<type>" + type + "</type>");
+                out.println("<ban>" + ban + "</ban>");
                 out.println("</id>");
 
                 i++;
@@ -53,7 +53,7 @@ Data db = new Data();
 
             out.println("<?xml version=\"1.0\"?>");
             out.println("<response>");
-            out.println("<message>Problem with ban.java</message>");
+            out.println("<message>Problem with unban.java</message>");
             out.println("</response>");
         } finally {
             out.close();

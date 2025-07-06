@@ -19,7 +19,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simple Admin Panel</title>
+<title>Admin Panel</title>
 <link rel="stylesheet" type="text/css" href="admin/adminstyle.css">
 
 <style>
@@ -91,18 +91,33 @@
     float: right;
   }
 
-  .admin-content {
+.admin-scroll {
     flex: 1;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-     background: rgba(0, 0, 0, 0.5);
-     
-  }
-  #welcome{
-      font-family: 'Jacquard', serif;
-  }
+    justify-content: center; /* center horizontally */
+    align-items: flex-start; /* align to top */
+}
+
+.admin-content {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+ #welcome {
+    font-family: 'Jacquard', serif;
+      position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -121,13 +136,15 @@
   <a href="#" open-admin="admin/add.jsp">Add</a>
   <a href="logout.jsp">Logout</a>
 </div>
-
-<div class="admin-content" id="admin-content">
-    <h2 id="welcome">Welcome, <%= u %></h2>
+<div class="admin-scroll">
+    <div class="admin-content" id="admin-content">
+        <h2 id="welcome">Welcome, <%= u %></h2>
+    </div>
 </div>
 </div>
 <script>
      const base = '<%= request.getContextPath() %>/';
+     const adminuser="<%= u %>";
 const sidebar = document.getElementById('sidebar');
 const menuBtn = document.getElementById('menuBtn');
 const closeBtn = document.getElementById('closeBtn');
@@ -160,7 +177,7 @@ for (var i = 0; i < links.length; i++) {
                 return jspr.text();
             })
             .then((jsphtml)=>{
-                endlisten();
+                endevent();
                 adminContent.innerHTML = jsphtml;
                                 switch (jsplink) {
                     case "admin/ban.jsp":
@@ -172,11 +189,13 @@ for (var i = 0; i < links.length; i++) {
                     case "admin/unban.jsp":
                         console.log("Unban JSP loaded");
                         title.textContent = "Unban";
+                        unbanjsp();
                         break;
 
                     case "admin/delete.jsp":
                         console.log("Delete JSP loaded");
                         title.textContent = "Delete";
+                        deletejsp();
                         break;
 
                     case "admin/add.jsp":

@@ -1,5 +1,5 @@
-package backend.admin;
 
+package backend.admin;
 
 import backend.Data;
 import javax.servlet.*;
@@ -9,7 +9,7 @@ import java.sql.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-public class ban extends HttpServlet {
+public class delete extends HttpServlet {
 Data db = new Data();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res)
@@ -20,7 +20,7 @@ Data db = new Data();
         try (Connection c = db.connectdb()) {
 
             PreparedStatement ps = c.prepareStatement(
-                "SELECT user, type FROM users WHERE type = 'player' AND user NOT IN (SELECT user FROM bans);"
+                "SELECT user, type FROM users"
             );
 
             ResultSet rs = ps.executeQuery();
@@ -53,7 +53,7 @@ Data db = new Data();
 
             out.println("<?xml version=\"1.0\"?>");
             out.println("<response>");
-            out.println("<message>Problem with ban.java</message>");
+            out.println("<message>Problem with delete.java</message>");
             out.println("</response>");
         } finally {
             out.close();
