@@ -172,7 +172,7 @@ for (var i = 0; i < links.length; i++) {
         fetch(jsplink)
             .then((jspr)=>{
                 if (!jspr.ok) {
-                    throw new Error('Cant open jsp: ' + response.status);
+                    throw new Error('Cant open jsp: ' + jspr.status);
                 }
                 return jspr.text();
             })
