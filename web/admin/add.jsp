@@ -12,7 +12,7 @@
   <label><input type="radio" name="userType" value="player" required checked>Player</label>
     </div>
    </div>
-    <button type="button" class="but" id="signup">Sign up</button>
+    <button type="button" class="but" id="signup">Add</button>
   <p id="check"></p>
 </div>
 

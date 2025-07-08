@@ -123,7 +123,6 @@
   <h2 style="font-family: 'Jacquard', serif;">Trade</h2>
   <a href="#" open-mar="game/sell.jsp">Sell</a>
   <a href="#" open-mar="game/buy.jsp">Buy</a>
-  <a href="#" open-mar="game/attack.jsp">Attack</a>
 
 </div>
 <div class="market-scroll">
@@ -182,12 +181,6 @@ for (var i = 0; i < links.length; i++) {
                         console.log("Buy JSP loaded");
                         title.textContent = "Buy";
                         buyjsp();
-                        break;
-
-                    case "game/attack.jsp":
-                        console.log("Attack JSP loaded");
-                        title.textContent = "Attack";
-                        attackjsp();
                         break;
 
                     default:

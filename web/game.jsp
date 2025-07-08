@@ -29,7 +29,7 @@
 }
 
 .game-view {
-  color: #000000;
+  
   z-index: 1;
     padding-top: 40px;
     color:white;
@@ -81,6 +81,62 @@
     top:90%;
     left:3%;
 }
+.card-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(2, 150px);
+  gap: 9px;
+}
+.card {
+    position: relative;
+  width: 100px;
+  height: 150px;
+   background-color: rgba(0, 0, 0, 0.5);
+ overflow: hidden;
+ padding: 0;
+}
+
+/*
+.card {
+  position: relative;
+  width: 100px;
+  height: 150px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid #cc6600;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}*/
+.card.selected {
+  border-color: orange;
+}
+.card img {
+    display:block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-level {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
 </style>
 <link rel="stylesheet" type="text/css" href="game/marketcss.css">
 </head>
@@ -100,8 +156,9 @@
       <jsp:include page="market.jsp" />
     </div>
   </div>
+    
   <script>
- 
+ isgame=false;
     const toggleBtn = document.getElementById('toggleBtn');
 const marketView = document.getElementById('marketView');
 
@@ -125,7 +182,52 @@ toggleBtn.addEventListener('click', () => {
       startGamePing();
     }
   }
-});</script>
+});
+  
+   const cardContainer = document.getElementById('cardContainer');
+   const currcardpl={
+   [player]: [
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+     { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" }
+  ]};
+  const currplayersell = [
+  { type: "e", level: "e" },
+  { type: "e", level: "e" },
+  { type: "e", level: "e" },
+  { type: "e", level: "e" },
+  { type: "e", level: "e" },
+  { type: "e", level: "e" }
+];
+
+  const playercoins;
+  const assigned="e";
+  const card_types = ['a', 'f', 'w', 'fa', 'fw', 'wa', 'fwa'];
+
+    
+
+const listeners = [];
+
+function addevent(element, event, handler) {
+    element.addEventListener(event, handler);
+    listeners.push({ element, event, handler });
+}
+
+function endevent() {
+    for (const { element, event, handler } of listeners) {
+        element.removeEventListener(event, handler);
+    }
+    listeners.length = 0;
+}
+addevent(window,'load', () => {
+  cacheCardImages();
+  startgame();
+});
+
+  </script>
   <script src="game/marketjs.js"></script>
 </body>
 </html>

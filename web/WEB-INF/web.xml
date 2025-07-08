@@ -28,6 +28,14 @@
         <servlet-name>deleteupdate</servlet-name>
         <servlet-class>backend.admin.deleteupdate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>start</servlet-name>
+        <servlet-class>backend.game.start</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>coins</servlet-name>
+        <servlet-class>backend.game.coins</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -63,5 +71,13 @@
     <servlet-mapping>
         <servlet-name>deleteupdate</servlet-name>
         <url-pattern>/deleteupdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>start</servlet-name>
+        <url-pattern>/start</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>coins</servlet-name>
+        <url-pattern>/coins</url-pattern>
     </servlet-mapping>
 </web-app>
