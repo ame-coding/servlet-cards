@@ -133,12 +133,12 @@
 </div>
 <script>
        const base = '<%= request.getContextPath() %>/';
-     const player="<%= u %>";  
+     const currplayer="<%= u %>";  
     const sidebar = document.getElementById('sidebar');
 const menuBtn = document.getElementById('menuBtn');
 const closeBtn = document.getElementById('closeBtn');
 const title = document.getElementById("title");
-document.getElementById("welcome").textContent="Welcome, "+player;
+document.getElementById("welcome").textContent="Welcome, "+currplayer;
 menuBtn.onclick = () => {
   sidebar.classList.add('show');
 };

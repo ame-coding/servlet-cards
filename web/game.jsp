@@ -88,7 +88,10 @@
   transform: translate(-50%, -50%);
   box-sizing: border-box;
 
-  display: grid;
+ 
+}
+.cardcon{
+    display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(2, 150px);
   gap: 9px;
@@ -102,25 +105,12 @@
  padding: 0;
 }
 
-/*
-.card {
-  position: relative;
-  width: 100px;
-  height: 150px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 2px solid #cc6600;
-  overflow: hidden;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}*/
+
 .card.selected {
   border-color: orange;
 }
 .card img {
-    display:block;
+    display:none;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -136,7 +126,13 @@
   padding: 2px 4px;
   border-radius: 3px;
 }
+.craft{
+ position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
 
+}
 </style>
 <link rel="stylesheet" type="text/css" href="game/marketcss.css">
 </head>
@@ -158,7 +154,7 @@
   </div>
     
   <script>
- isgame=false;
+ 
     const toggleBtn = document.getElementById('toggleBtn');
 const marketView = document.getElementById('marketView');
 
@@ -183,10 +179,10 @@ toggleBtn.addEventListener('click', () => {
     }
   }
 });
-  
+  isgame=false;
    const cardContainer = document.getElementById('cardContainer');
    const currcardpl={
-   [player]: [
+   [currplayer]: [
     { type: "e", level: "e" },
     { type: "e", level: "e" },
     { type: "e", level: "e" },
@@ -202,11 +198,22 @@ toggleBtn.addEventListener('click', () => {
   { type: "e", level: "e" },
   { type: "e", level: "e" }
 ];
+const buyplayer = {
+  user: [
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" },
+    { type: "e", level: "e" }
+  ]
+};
 
-  const playercoins;
-  const assigned="e";
+
+ var playercoins=0;
+ var assigned="e";
   const card_types = ['a', 'f', 'w', 'fa', 'fw', 'wa', 'fwa'];
-
+ const coindisp = document.getElementById('coinsLabel');
     
 
 const listeners = [];
@@ -223,7 +230,7 @@ function endevent() {
     listeners.length = 0;
 }
 addevent(window,'load', () => {
-  cacheCardImages();
+  
   startgame();
 });
 

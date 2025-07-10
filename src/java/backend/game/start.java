@@ -55,11 +55,6 @@ public class start extends HttpServlet {
                     assign = assignOptions[new Random().nextInt(assignOptions.length)];
                     coins = 1000;
 
-                    // insert into users
-                    ps = c.prepareStatement("INSERT INTO users(user) VALUES(?)");
-                    ps.setString(1, user);
-                    ps.executeUpdate();
-
                     // insert into inventory
                     ps = c.prepareStatement(
                             "INSERT INTO inventory(user, cards, sell, assign, coins) VALUES(?,?,?,?,?)"

@@ -2,7 +2,10 @@
  const startgame=()=>{
      
      isgame=true;
-    cardcreate("cardContainer");
+     startcards();
+      cardcreate("cardContainer", currplayer, "inventory");
+      loadpics("cardContainer", currcardpl, currplayer);
+    console.log("done");
     isgame=false;
     
     };
@@ -10,7 +13,7 @@ let selectedCard = null;
 
 
 const handleCardClick = (container, playerName, card) => {
-  const containerType = container.dataset.type; // e.g., 'inventory', 'sell', 'buy'
+ /* const containerType = container.dataset.type; // e.g., 'inventory', 'sell', 'buy'
   const containerPlayer = container.dataset.player || playerName;
   const cardsArray = containerType === 'sell' ? currplayersell : currplayer[containerPlayer];
 
@@ -95,7 +98,7 @@ const handleCardClick = (container, playerName, card) => {
   // Cleanup selection
   first.card.classList.remove('select');
   second.card.classList.remove('select');
-  selectedCard = null;
+  selectedCard = null;*/
 };
 
 // Utility to get price of a card
@@ -104,52 +107,8 @@ const requiredPrice = (card) => {
   return 10 * card.level; // Example: level 1 = 10 coins, level 2 = 20 coins, …
 };
 
-const cardcreate = (whichcon, playerName, containerType = 'inventory') => {
-  const container = document.getElementById(whichcon);
-  container.innerHTML = '';
-  container.dataset.type = containerType;
-  container.dataset.player = playerName;
-
-  const cardsArray =
-    containerType === 'sell' ? currplayersell :
-    containerType === 'buy' ? currplayer[playerName] : 
-    currplayer[playerName];
-
-  for (let i = 0; i < cardsArray.length; i++) {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.index = i;
-
-    const img = document.createElement('img');
-    img.style.display = 'none';
-    card.appendChild(img);
-
-    if (isgame) {
-  const craftBtn = document.createElement('button');
-  craftBtn.textContent = 'Craft';
-  craftBtn.className = 'but craft-button';
-  craftBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    handleCraft(playerName, i, container);
-  });
-  card.appendChild(craftBtn);
-}
-
-
-    const levelBadge = document.createElement('div');
-    levelBadge.className = 'card-level';
-    levelBadge.textContent = `Lv.${i + 1}`;
-    card.appendChild(levelBadge);
-
-    card.addEventListener('click', () => {
-      handleCardClick(container, playerName, card);
-    });
-
-    container.appendChild(card);
-  }
-};
-const handleCraft = (playerName, index, container) => {
-  const assigned = assignedType[playerName]; // assuming you have `assignedType` like { player1: "f", … }
+const handleCraft = (index, container) => {
+  /*const assigned = assignedType[playerName]; // assuming you have `assignedType` like { player1: "f", … }
 
   // Backup original card
   const originalCard = { ...currplayer[playerName][index] };
@@ -181,100 +140,10 @@ const handleCraft = (playerName, index, container) => {
       // revert
       currplayer[playerName][index] = originalCard;
       loadpics(container.id, currplayer, playerName);
-    });
+    });*/
 };
 
-const loadpics = (whichcon, dictplayer, playername) => {
-  const container = document.getElementById(whichcon);
-  const cards = container.querySelectorAll('.card');
-
-  const playerCards = dictplayer[playername];
-  if (!playerCards) {
-    console.error(`Player '${playername}' not found in dictplayer`);
-    return;
-  }
-
-  caches.open('cards-images').then(cache => {
-    cards.forEach((card, i) => {
-      const { type, level } = playerCards[i] || {};
-
-      if (!type || type === "e") {
-        console.log(`Skipping card ${i} for player '${playername}' (empty or 'e')`);
-        return;
-      }
-
-      const imgPath = `images/cards/${type}.png`;
-
-      cache.match(imgPath).then(cachedRes => {
-        if (cachedRes) {
-          cachedRes.blob().then(blob => {
-            const imgURL = URL.createObjectURL(blob);
-
-            const img = document.createElement('img');
-            img.src = imgURL;
-            img.alt = type;
-            img.style.display = 'block';
-
-            // Clear any existing children before appending
-            card.innerHTML = '';
-
-            card.appendChild(img);
-
-            const lvlBox = document.createElement('div');
-            lvlBox.className = 'card-level';
-            lvlBox.textContent = `Lvl ${level}`;
-            card.appendChild(lvlBox);
-          });
-        } else {
-          console.warn(`Image ${imgPath} not found in cache. Skipping card ${i}.`);
-        }
-      });
-    });
-  });
-};
-
-const usercards=()=>{
-    fetch(`checkorcreate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `xml=<user>${player}</user>`
-    })
-    .then(res => res.text())
-    .then(xmlStr => {
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(xmlStr, "application/xml");
-        console.log(xml);
-
-        const userNode = xml.getElementsByTagName("user")[0];
-        if (!userNode) {
-            console.warn(`No <user> element in response`);
-            return;
-        }
-
-        const cards = [];
-        const cardNodes = userNode.getElementsByTagName("c");
-        for (let cNode of cardNodes) {
-            const type = cNode.textContent.trim();
-            cards.push({ type, level: "e" });
-        }
-
-        currcardpl[player] = cards;
-
-        const coinNode = userNode.getElementsByTagName("coin")[0];
-        const coins = coinNode ? parseInt(coinNode.textContent.trim(), 10) : 0;
-        playercoins=coins;
-        console.log(`Updated cards for ${player}:`, currcardpl[player]);
-        console.log(`Coins for ${player}:`, coins);
-
-        // You can also update the UI here if you want
-    })
-    .catch(err => {
-        console.error(`Error fetching data for ${player}:`, err);
-    });
-    
-    
-};
-function selljsp() {
+function selljsp() {/*
     const marketDiv = document.getElementById("market-content");
     marketDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between;">
@@ -287,9 +156,9 @@ function selljsp() {
     loadpics("inventory-container", currplayer, player);
 
     cardcreate("sell-container", player, "sell");
-    loadpics("sell-container", { [player]: currplayersell }, player);
+    loadpics("sell-container", { [player]: currplayersell }, player);*/
 }
-function buyjsp() {
+function buyjsp() {/*
     const marketDiv = document.getElementById("market-content");
     marketDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -343,12 +212,133 @@ function buyjsp() {
         })
         .catch(err => {
             console.error("Error loading buy list", err);
-        });
+        });*/
 }
 
+const startcards = () => {
+    const xmls = "<user>"+currplayer+"</user>";
+
+    fetch(base + "start", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ xml: xmls })
+    })
+    .then(res => res.text())
+    .then(xmlStr => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlStr, "application/xml");
+        console.log(xmlDoc);
+
+        const startcard = xmlDoc.getElementsByTagName("user")[0];
+ 
+        const cards = [];
+        const cardsarr = startcard.getElementsByTagName("c");
+        for (let crd of cardsarr) {
+            const typest = crd.getElementsByTagName("type")[0];
+            const levelst = crd.getElementsByTagName("level")[0];
+
+            const type = typest ? typest.textContent.trim() : "e";
+            const level = levelst ? levelst.textContent.trim() : "e";
+
+            cards.push({ type, level });
+        }
+
+        currcardpl[currplayer] = cards;
+
+        const coinsst = startcard.getElementsByTagName("coins")[0];
+        playercoins = coinsst ? parseInt(coinsst.textContent.trim(), 10) : 0;
+        coindisp.textContent=playercoins;
+        const assignedst = startcard.getElementsByTagName("assigned")[0];
+        assigned = assignedst ? assignedst.textContent.trim() : "e";
+        console.log(`Updated cards for ${currplayer}:`, currcardpl[currplayer]);
+        console.log(`Coins for ${currplayer}:`, playercoins);
+        console.log(`Assigned for ${currplayer}:`, assigned);
+    })
+    .catch(err => {
+        console.error(`Error fetching data for ${currplayer}:`, err);
+    });
+};
 
 
 
+const cardcreate = (whichcon, playerName, contype) => {
+    const parentcon = document.getElementById(whichcon);
+    if (!parentcon) {
+    console.error(`No element found with id: ${whichcon}`);
+    return;
+}
+
+     const gamecon = document.createElement('div');
+      gamecon.className = 'cardcon';
+    gamecon.innerHTML = '';
+    gamecon.dataset.type = contype;
+    gamecon.dataset.player = playerName;
+
+    for (let i = 0; i < 6; i++) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.index = i;
+
+      const img = document.createElement('img');
+      img.style.display = 'none';
+      card.appendChild(img);
+
+      if (isgame) {
+    const craftBtn = document.createElement('button');
+    craftBtn.textContent = 'Craft';
+    craftBtn.className = 'but craft';
+    craftBtn.addEventListener('click', () => {
+      handleCraft(i, gamecon);
+    });
+
+    card.appendChild(craftBtn);
+  }
+
+
+      const levelc = document.createElement('div');
+      levelc.className = 'card-level';
+      levelc.textContent = "Lv.0";
+      card.appendChild(levelc);
+
+      card.addEventListener('click', () => {
+        handleCardClick(gamecon, playerName, card);
+      });
+
+      gamecon.appendChild(card);
+    }
+       parentcon.appendChild(gamecon);
+};
+
+const loadpics = (whichcon, dictplayer, playername) => {
+  const container = document.getElementById(whichcon);
+  const carcon = container.querySelector(`.cardcon[data-player="${playername}"]`);
+  const cards = carcon.querySelectorAll('.card');
+ console.log(playername);
+ console.log(dictplayer);
+ console.log(dictplayer[playername]);
+  const playerCards = dictplayer[playername];
+  console.log(playerCards);
+
+  cards.forEach((card, i) => {
+    const { type, level } = playerCards[i];
+     const img = card.querySelector('img');
+    if (!type || type === "e") {
+        img.style.display = 'none';
+        img.alt = "e";
+      return;
+    }
+
+    const imgPath = `images/cards/${type}.png`;
+
+      img.src = imgPath;
+      img.alt = type;
+      img.style.display = 'block';
+
+    let lvl = card.querySelector('.card-level');
+
+    lvl.textContent = `Lvl ${level}`;
+  });
+};
 
 /*
  * 
@@ -571,4 +561,104 @@ function stopGamePing() {
     console.log("[GAME] Pings paused.");
   }
 }
+  protected void service(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        res.setContentType("text/xml;charset=UTF-8");
+        PrintWriter out = res.getWriter();
+
+        try (Connection c = db.connectdb()) {
+
+            PreparedStatement ps = c.prepareStatement(
+                "SELECT user, type FROM users WHERE type = 'player' AND user NOT IN (SELECT user FROM bans);"
+            );
+
+            ResultSet rs = ps.executeQuery();
+
+            out.println("<?xml version=\"1.0\"?>");
+            out.println("<table>");
+
+            int i = 1;
+
+            while (rs.next()) {
+                String user = rs.getString("user");
+                String type = rs.getString("type");
+
+                out.println("<id i=\"" + i + "\">");
+                out.println("<user>" + user + "</user>");
+                out.println("<type>" + type + "</type>");
+                out.println("</id>");
+
+                i++;
+            }
+
+            out.println("</table>");
+
+            rs.close();
+            ps.close();
+
+        } catch (Exception e) {
+            res.setStatus(500);
+            e.printStackTrace();
+
+            out.println("<?xml version=\"1.0\"?>");
+            out.println("<response>");
+            out.println("<message>Problem with ban.java</message>");
+            out.println("</response>");
+        } finally {
+            out.close();
+        }
+
+ @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        res.setContentType("text/xml;charset=UTF-8");
+        PrintWriter out = res.getWriter();
+
+        try {
+            String xmlS = req.getParameter("xml");
+            System.out.println("XML from client: " + xmlS);
+
+            if (xmlS == null) throw new Exception("No xml from client");
+
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlS)));
+            String user = doc.getElementsByTagName("user").item(0).getTextContent();
+            String reason = doc.getElementsByTagName("reason").item(0).getTextContent();
+
+            System.out.println("User to ban: " + user + ", Reason: " + reason);
+
+            try (Connection c = db.connectdb()) {
+
+                PreparedStatement ps = c.prepareStatement(
+                    "INSERT INTO bans (user, ban) VALUES (?, ?)"
+                );
+                ps.setString(1, user);
+                ps.setString(2, reason);
+
+                int rows = ps.executeUpdate();
+
+                out.println("<?xml version=\"1.0\"?>");
+                out.println("<response>");
+                if (rows > 0) {
+                    out.println("<message>User banned successfully</message>");
+                } else {
+                    out.println("<message>Failed to ban user</message>");
+                }
+                out.println("</response>");
+
+                ps.close();
+            }
+
+        } catch (Exception e) {
+            res.setStatus(500);
+            e.printStackTrace();
+
+            out.println("<?xml version=\"1.0\"?>");
+            out.println("<response>");
+            out.println("<message>Problem with BanUpdate.java</message>");
+            out.println("</response>");
+        } finally {
+            out.close();
+        }
+    }
 */
