@@ -1,14 +1,14 @@
+const startgame = () => {
+    isgame = true;
 
- const startgame=()=>{
-     
-     isgame=true;
-     startcards();
-      cardcreate("cardContainer", currplayer, "inventory");
-      loadpics("cardContainer", currcardpl, currplayer);
-    console.log("done");
-    isgame=false;
-    
-    };
+    startcards().then(() => {
+        cardcreate("cardContainer", currplayer, "inventory");
+        loadpics("cardContainer", currcardpl, currplayer);
+        isgame = false;
+        console.log("Game initialized");
+    });
+};
+
 let selectedCard = null;
 
 
@@ -214,11 +214,10 @@ function buyjsp() {/*
             console.error("Error loading buy list", err);
         });*/
 }
-
 const startcards = () => {
-    const xmls = "<user>"+currplayer+"</user>";
+    const xmls = "<user>" + currplayer + "</user>";
 
-    fetch(base + "start", {
+    return fetch(base + "start", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ xml: xmls })
@@ -230,7 +229,7 @@ const startcards = () => {
         console.log(xmlDoc);
 
         const startcard = xmlDoc.getElementsByTagName("user")[0];
- 
+
         const cards = [];
         const cardsarr = startcard.getElementsByTagName("c");
         for (let crd of cardsarr) {
@@ -243,13 +242,16 @@ const startcards = () => {
             cards.push({ type, level });
         }
 
+        currcardpl = {};
         currcardpl[currplayer] = cards;
 
         const coinsst = startcard.getElementsByTagName("coins")[0];
         playercoins = coinsst ? parseInt(coinsst.textContent.trim(), 10) : 0;
-        coindisp.textContent=playercoins;
+        coindisp.textContent = playercoins;
+
         const assignedst = startcard.getElementsByTagName("assigned")[0];
         assigned = assignedst ? assignedst.textContent.trim() : "e";
+
         console.log(`Updated cards for ${currplayer}:`, currcardpl[currplayer]);
         console.log(`Coins for ${currplayer}:`, playercoins);
         console.log(`Assigned for ${currplayer}:`, assigned);
@@ -258,6 +260,7 @@ const startcards = () => {
         console.error(`Error fetching data for ${currplayer}:`, err);
     });
 };
+
 
 
 
@@ -313,18 +316,18 @@ const loadpics = (whichcon, dictplayer, playername) => {
   const container = document.getElementById(whichcon);
   const carcon = container.querySelector(`.cardcon[data-player="${playername}"]`);
   const cards = carcon.querySelectorAll('.card');
- console.log(playername);
- console.log(dictplayer);
- console.log(dictplayer[playername]);
   const playerCards = dictplayer[playername];
-  console.log(playerCards);
 
   cards.forEach((card, i) => {
     const { type, level } = playerCards[i];
      const img = card.querySelector('img');
+     const crft = card.querySelector('button');
+      const lvldiv = card.querySelector('.card-level');
     if (!type || type === "e") {
         img.style.display = 'none';
         img.alt = "e";
+        crft.style.display = 'block';
+        lvldiv.style.display = 'none';
       return;
     }
 
@@ -333,7 +336,8 @@ const loadpics = (whichcon, dictplayer, playername) => {
       img.src = imgPath;
       img.alt = type;
       img.style.display = 'block';
-
+      crft.style.display = 'none';
+      lvldiv.style.display = 'block';
     let lvl = card.querySelector('.card-level');
 
     lvl.textContent = `Lvl ${level}`;

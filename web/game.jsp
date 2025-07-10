@@ -117,6 +117,7 @@
 }
 
 .card-level {
+    display:none;
   position: absolute;
   bottom: 4px;
   right: 4px;
@@ -127,6 +128,7 @@
   border-radius: 3px;
 }
 .craft{
+    display:none;
  position: absolute;
 top: 50%;
 left: 50%;
@@ -181,7 +183,7 @@ toggleBtn.addEventListener('click', () => {
 });
   isgame=false;
    const cardContainer = document.getElementById('cardContainer');
-   const currcardpl={
+   var currcardpl={
    [currplayer]: [
     { type: "e", level: "e" },
     { type: "e", level: "e" },
@@ -190,7 +192,7 @@ toggleBtn.addEventListener('click', () => {
     { type: "e", level: "e" },
     { type: "e", level: "e" }
   ]};
-  const currplayersell = [
+  var currplayersell = [
   { type: "e", level: "e" },
   { type: "e", level: "e" },
   { type: "e", level: "e" },
@@ -198,7 +200,7 @@ toggleBtn.addEventListener('click', () => {
   { type: "e", level: "e" },
   { type: "e", level: "e" }
 ];
-const buyplayer = {
+var buyplayer = {
   user: [
     { type: "e", level: "e" },
     { type: "e", level: "e" },
@@ -235,6 +237,6 @@ addevent(window,'load', () => {
 });
 
   </script>
-  <script src="game/marketjs.js"></script>
+  <script src="game/marketscript.js"></script>
 </body>
 </html>
