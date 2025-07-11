@@ -33,40 +33,16 @@
         <servlet-class>backend.game.start</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>coins</servlet-name>
-        <servlet-class>backend.game.coins</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>cardlist</servlet-name>
-        <servlet-class>backend.game.cardlist</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>sellcard</servlet-name>
-        <servlet-class>backend.game.sellcard</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>cardlistupdate</servlet-name>
         <servlet-class>backend.game.cardlistupdate</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>sellcardupdate</servlet-name>
-        <servlet-class>backend.game.sellcardupdate</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>coinupdate</servlet-name>
-        <servlet-class>backend.game.coinupdate</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>buycard</servlet-name>
         <servlet-class>backend.game.buycard</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>buycardlist</servlet-name>
-        <servlet-class>backend.game.buycardlist</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>buycardupdate</servlet-name>
-        <servlet-class>backend.game.buycardupdate</servlet-class>
+        <servlet-name>sellcardupdate</servlet-name>
+        <servlet-class>backend.game.sellcardupdate</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -109,39 +85,11 @@
         <url-pattern>/start</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>coins</servlet-name>
-        <url-pattern>/coins</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>cardlist</servlet-name>
-        <url-pattern>/cardlist</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>sellcard</servlet-name>
-        <url-pattern>/sellcard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>cardlistupdate</servlet-name>
         <url-pattern>/cardlistupdate</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>sellcardupdate</servlet-name>
-        <url-pattern>/sellcardupdate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>coinupdate</servlet-name>
-        <url-pattern>/coinupdate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>buycard</servlet-name>
         <url-pattern>/buycard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>buycardlist</servlet-name>
-        <url-pattern>/buycardlist</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>buycardupdate</servlet-name>
-        <url-pattern>/buycardupdate</url-pattern>
     </servlet-mapping>
 </web-app>

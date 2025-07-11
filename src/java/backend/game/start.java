@@ -43,19 +43,19 @@ public class start extends HttpServlet {
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    // User exists
+                   
                     cards = rs.getString("cards");
                     coins = rs.getInt("coins");
                     assign = rs.getString("assign");
                 } else {
-                    // User does not exist → insert defaults
+                
                     String defaultCards = "e,e,e,e,e,e";
                     String defaultSell = "e,e,e,e,e,e";
                     String[] assignOptions = {"f", "w", "a"};
                     assign = assignOptions[new Random().nextInt(assignOptions.length)];
                     coins = 1000;
 
-                    // insert into inventory
+                  
                     ps = c.prepareStatement(
                             "INSERT INTO inventory(user, cards, sell, assign, coins) VALUES(?,?,?,?,?)"
                     );
@@ -71,7 +71,7 @@ public class start extends HttpServlet {
 
                 c.commit();
 
-                // Build XML response
+               
                 String[] cardArray = cards.split(",");
 
                 out.println("<?xml version=\"1.0\"?>");
@@ -82,9 +82,9 @@ public class start extends HttpServlet {
                     String type = "e";
                     String level = "e";
 
-                    if (!cardStr.equals("e") && cardStr.length() >= 2) {
-                        type = cardStr.substring(0, cardStr.length() - 1);
-                        level = cardStr.substring(cardStr.length() - 1);
+                    if (!cardStr.equals("e")) {
+                        type = cardStr.replaceAll("\\d+$", "");
+                        level = cardStr.substring(type.length());
                     }
 
                     out.printf("<c i=\"%d\">%n", i + 1);

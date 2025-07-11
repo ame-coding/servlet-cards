@@ -1,85 +1,94 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package backend.game;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author payme
- */
+import backend.Data;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+import javax.xml.parsers.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 public class cardlistupdate extends HttpServlet {
+    Data db = new Data();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet cardlistupdate</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet cardlistupdate at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        res.setContentType("text/xml;charset=UTF-8");
+        PrintWriter out = res.getWriter();
+
+        try {
+            String xmlS = req.getParameter("xml");
+            System.out.println("Received XML:\n" + xmlS);
+            if (xmlS == null) throw new Exception("No xml from client");
+
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlS)));
+
+            String user = doc.getElementsByTagName("player").item(0).getTextContent().trim();
+
+            StringBuilder cardsBuilder = new StringBuilder();
+            String cards = "";
+
+            String type = "e";
+            String level = "e";
+
+            for (int i = 0; i < 6; i++) {
+
+                Element cparse = (Element) doc.getElementsByTagName("c").item(i);
+
+                type = cparse.getElementsByTagName("type").item(0).getTextContent().trim();
+                level = cparse.getElementsByTagName("level").item(0).getTextContent().trim();
+
+                if (!type.equals("e")) {
+                    cardsBuilder.append(type).append(level);
+                } else {
+                    cardsBuilder.append("e");
+                }
+
+                if (i < 5) {
+                    cardsBuilder.append(",");
+                }
+            }
+
+            cards = cardsBuilder.toString();
+
+            try (Connection c = db.connectdb()) {
+
+
+                PreparedStatement ps = c.prepareStatement(
+                        "UPDATE inventory SET cards = ? WHERE user = ?"
+                );
+                ps.setString(1, cards);
+                ps.setString(2, user);
+
+                int rows = ps.executeUpdate();
+
+                if (rows == 0) {
+                    throw new Exception("Something wrong in database for user " + user);
+                }
+
+                out.println("<?xml version=\"1.0\"?>");
+                out.println("<response>");
+                out.println("<message>Success</message>");
+                out.println("</response>");
+            }
+
+        } catch (Exception e) {
+            res.setStatus(500);
+            e.printStackTrace();
+
+            out.println("<?xml version=\"1.0\"?>");
+            out.println("<response>");
+            out.println("<message>Problem with cardlistupdate.java</message>");
+            out.println("</response>");
+        } finally {
+            out.close();
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }
